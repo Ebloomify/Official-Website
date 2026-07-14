@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>[[name]] — eBloomify</title>
+  <meta name="description" content="[[intro]]">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="/assets/a14.js" defer></script>
+</head>
+<body>
+
+  <!-- Header(与首页一致,链接指回首页锚点) -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.82);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:0.5px solid var(--color-border-tertiary);">
+    <div style="width:min(1180px,100% - 40px);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;">
+      <a href="/#top" style="display:flex;align-items:center;text-decoration:none;color:inherit;">
+        <img src="/assets/a6.png" alt="eBloomify" style="height:30px;width:auto;display:block;">
+      </a>
+      <nav style="display:flex;align-items:center;gap:28px;font-size:14.5px;color:var(--color-text-secondary);">
+        <a href="/#products" style="text-decoration:none;color:inherit;transition:color .15s;" style-hover="color:var(--color-text-primary)">Products</a>
+        <a href="/#services" style="text-decoration:none;color:inherit;transition:color .15s;" style-hover="color:var(--color-text-primary)">AI Services</a>
+        <a href="/#about" style="text-decoration:none;color:inherit;transition:color .15s;" style-hover="color:var(--color-text-primary)">About</a>
+        <a href="/#news" style="text-decoration:none;color:inherit;transition:color .15s;" style-hover="color:var(--color-text-primary)">News</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <a href="mailto:[[contact_email]]" style="text-decoration:none;color:var(--color-text-secondary);font-size:14.5px;font-weight:500;white-space:nowrap;transition:color .15s;" style-hover="color:var(--color-text-primary)">Contact</a>
+        <a href="/#contact" style="text-decoration:none;background:var(--color-text-info);color:#fff;padding:9px 17px;border-radius:var(--border-radius-md);font-size:14px;font-weight:600;white-space:nowrap;transition:filter .15s;" style-hover="filter:brightness(0.92)">Get in touch</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 面包屑 + 产品头部 -->
+  <section style="background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);padding:56px 0 60px;">
+    <div data-reveal="" style="width:min(1180px,100% - 40px);margin:0 auto;">
+      <p style="font-size:13.5px;color:var(--color-text-tertiary);margin:0 0 26px;">
+        <a href="/" style="color:inherit;text-decoration:none;transition:color .15s;" style-hover="color:var(--color-text-primary)">Home</a>
+        <span style="margin:0 8px;">/</span>
+        <a href="/#products" style="color:inherit;text-decoration:none;transition:color .15s;" style-hover="color:var(--color-text-primary)">Products</a>
+        <span style="margin:0 8px;">/</span>
+        <span style="color:var(--color-text-secondary);">[[name]]</span>
+      </p>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        [[#if icon]]<img src="[[icon]]" alt="[[name]]" style="width:76px;height:76px;border-radius:20px;object-fit:cover;flex:none;display:block;box-shadow:var(--shadow-sm);">[[/if]]
+        <div style="flex:1;min-width:260px;">
+          <h1 style="font-size:clamp(32px,4.4vw,50px);font-weight:600;letter-spacing:-0.03em;line-height:1.06;margin:0 0 6px;">[[name]]</h1>
+          <p style="font-size:17px;color:var(--color-text-tertiary);margin:0;">[[tagline]]</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          [[#if appstore]]<a href="[[appstore]]" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:10px 16px;color:var(--color-text-primary);background:var(--color-background-primary);transition:background .15s;" style-hover="background:var(--color-background-tertiary)"><i class="ti ti-brand-apple" style="font-size:18px;"></i><span style="font-size:13.5px;font-weight:600;">App Store</span></a>[[/if]]
+          [[#if googleplay]]<a href="[[googleplay]]" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:10px 16px;color:var(--color-text-primary);background:var(--color-background-primary);transition:background .15s;" style-hover="background:var(--color-background-tertiary)"><i class="ti ti-brand-google-play" style="font-size:17px;"></i><span style="font-size:13.5px;font-weight:600;">Google Play</span></a>[[/if]]
+          [[#if comingsoon]]<span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--color-text-tertiary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-pill);padding:9px 16px;"><i class="ti ti-clock" style="font-size:16px;"></i>Coming soon</span>[[/if]]
+        </div>
+      </div>
+      [[#if intro]]<p style="font-size:17px;color:var(--color-text-secondary);line-height:1.65;max-width:760px;margin:26px 0 0;">[[intro]]</p>[[/if]]
+      [[#if tags]]
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;">
+        [[#each tags]]<span style="font-size:12.5px;color:var(--color-text-secondary);background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-pill);padding:5px 12px;">[[this]]</span>[[/each]]
+      </div>
+      [[/if]]
+    </div>
+  </section>
+
+  [[#if images]]
+  <!-- 图片画廊 -->
+  <section style="background:var(--color-background-primary);padding:72px 0 0;">
+    <div data-reveal="" style="width:min(1180px,100% - 40px);margin:0 auto;">
+      <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-secondary);">
+        <img id="galleryMain" src="[[mainImage]]" alt="[[name]]" style="width:100%;max-height:640px;object-fit:contain;display:block;">
+      </div>
+      [[#if hasMultipleImages]]
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+        [[#each images]]
+        <button type="button" onclick="document.getElementById('galleryMain').src=this.querySelector('img').src" style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0;overflow:hidden;background:var(--color-background-secondary);cursor:pointer;width:96px;height:72px;transition:border-color .15s;" style-hover="border-color:var(--color-text-info)">
+          <img src="[[this]]" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </button>
+        [[/each]]
+      </div>
+      [[/if]]
+    </div>
+  </section>
+  [[/if]]
+
+  [[#if contentHtml]]
+  <!-- 详细介绍 -->
+  <section style="background:var(--color-background-primary);padding:72px 0 0;">
+    <div data-reveal="" style="width:min(880px,100% - 40px);margin:0 auto;">
+      <p style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-info);margin:0 0 14px;">Overview</p>
+      <div class="prod-content" style="font-size:16px;color:var(--color-text-secondary);line-height:1.75;">[[&contentHtml]]</div>
+    </div>
+  </section>
+  <style>
+    .prod-content h2, .prod-content h3 { color: var(--color-text-primary); letter-spacing: -0.02em; line-height: 1.2; margin: 1.6em 0 0.6em; }
+    .prod-content p { margin: 0 0 1em; }
+    .prod-content img { max-width: 100%; height: auto; border-radius: var(--border-radius-md); }
+    .prod-content ul, .prod-content ol { padding-left: 1.4em; margin: 0 0 1em; }
+    .prod-content a { color: var(--color-text-info); }
+  </style>
+  [[/if]]
+
+  [[#if specs]]
+  <!-- 参数表 -->
+  <section style="background:var(--color-background-primary);padding:72px 0 0;">
+    <div data-reveal="" style="width:min(880px,100% - 40px);margin:0 auto;">
+      <p style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-info);margin:0 0 14px;">Details</p>
+      <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;">
+        [[#each specs]]
+        <div style="display:flex;flex-wrap:wrap;border-bottom:0.5px solid var(--color-border-tertiary);">
+          <div style="flex:0 0 200px;min-width:140px;padding:14px 20px;background:var(--color-background-secondary);font-size:14px;font-weight:600;color:var(--color-text-primary);">[[name]]</div>
+          <div style="flex:1;min-width:200px;padding:14px 20px;font-size:14.5px;color:var(--color-text-secondary);line-height:1.6;">[[value]]</div>
+        </div>
+        [[/each]]
+      </div>
+    </div>
+  </section>
+  [[/if]]
+
+  <!-- 底部 CTA -->
+  <section style="background:var(--color-background-primary);padding:96px 0 104px;">
+    <div data-reveal="" style="width:min(1180px,100% - 40px);margin:0 auto;text-align:center;">
+      <h2 style="font-size:clamp(28px,3.6vw,40px);font-weight:600;letter-spacing:-0.025em;line-height:1.1;margin:0 auto 16px;max-width:620px;">Want to learn more about [[name]]?</h2>
+      <p style="font-size:17px;color:var(--color-text-secondary);max-width:480px;margin:0 auto 28px;line-height:1.55;">We'd love to hear from you — reach out and we'll get back to you soon.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="/#contact" style="text-decoration:none;background:var(--color-text-info);color:#fff;padding:14px 28px;border-radius:var(--border-radius-md);font-size:15px;font-weight:600;transition:filter .15s;" style-hover="filter:brightness(0.92)">Get in touch</a>
+        <a href="/#products" style="text-decoration:none;background:var(--color-background-primary);color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary);padding:14px 28px;border-radius:var(--border-radius-md);font-size:15px;font-weight:600;transition:background .15s;" style-hover="background:var(--color-background-tertiary)">All products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer(与首页一致) -->
+  <footer style="background:var(--color-background-secondary);border-top:0.5px solid var(--color-border-tertiary);padding:56px 0 32px;">
+    <div style="width:min(1180px,100% - 40px);margin:0 auto;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-bottom:40px;">
+        <div style="max-width:320px;">
+          <img src="/assets/a6.png" alt="eBloomify" style="height:28px;width:auto;display:block;margin-bottom:14px;">
+          <p style="font-size:13.5px;color:var(--color-text-tertiary);line-height:1.6;margin:0;">Grow, Connect, Thrive. Cultivate Your Green World. Consumer products and agentic AI services, made in Austin, Texas.</p>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin:0 0 14px;">Products</p>
+          [[#each footerProducts]]
+          <p style="margin:0 0 10px;"><a href="/products/[[slug]].html" style="text-decoration:none;color:var(--color-text-secondary);font-size:14px;transition:color .15s;" style-hover="color:var(--color-text-primary)">[[name]]</a></p>
+          [[/each]]
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin:0 0 14px;">Company</p>
+          <p style="margin:0 0 10px;"><a href="/#about" style="text-decoration:none;color:var(--color-text-secondary);font-size:14px;transition:color .15s;" style-hover="color:var(--color-text-primary)">About</a></p>
+          <p style="margin:0 0 10px;"><a href="/#services" style="text-decoration:none;color:var(--color-text-secondary);font-size:14px;transition:color .15s;" style-hover="color:var(--color-text-primary)">AI services</a></p>
+          <p style="margin:0 0 10px;"><a href="/#news" style="text-decoration:none;color:var(--color-text-secondary);font-size:14px;transition:color .15s;" style-hover="color:var(--color-text-primary)">News</a></p>
+          <p style="margin:0 0 10px;"><a href="/#contact" style="text-decoration:none;color:var(--color-text-secondary);font-size:14px;transition:color .15s;" style-hover="color:var(--color-text-primary)">Contact</a></p>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-text-tertiary);margin:0 0 14px;">Get in touch</p>
+          <p style="margin:0 0 10px;"><a href="mailto:[[contact_email]]" style="text-decoration:none;color:var(--color-text-secondary);font-size:14px;transition:color .15s;" style-hover="color:var(--color-text-primary)">[[contact_email]]</a></p>
+          <p style="font-size:14px;color:var(--color-text-tertiary);line-height:1.6;margin:0;">[[contact_address]]</p>
+        </div>
+      </div>
+      <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <p style="font-size:12.5px;color:var(--color-text-tertiary);margin:0;">Copyright © <span id="year"></span> eBloomify LLC. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "hero_line1": "Grow, Connect, Thrive.",
+  "hero_line2": "Cultivate Your Green World",
+  "hero_sub": "eBloomify builds digital spaces where communities can flourish — from our own apps to custom agentic AI we build for businesses.",
+  "products_heading": "Apps that help communities grow",
+  "products_sub": "We design consumer products with the user at their core — nurturing connection, sharing, and the joy of collaboration.",
+  "about_heading": "Where communities flourish",
+  "about_p1": "Founded on the belief that technology should bring people together and enrich their lives, eBloomify stands at the forefront of creating digital spaces where communities can flourish.",
+  "about_p2": "Our suite of applications is designed with the user at its core, ensuring that every feature nurtures the growth of connections, the sharing of resources and knowledge, and the joy of collaboration.",
+  "news": [
+    {
+      "date": "Dec 23, 2024",
+      "title": "GardeNet is now available on the App Store",
+      "url": ""
+    },
+    {
+      "date": "Oct 1, 2023",
+      "title": "GardeNet is now available on Google Play",
+      "url": ""
+    }
+  ],
+  "contact_heading": "Let's grow something together",
+  "contact_sub": "Whether you're exploring an AI agent for your business or want to learn about our products — we'd love to hear from you.",
+  "contact_email": "ebloomifyllc@gmail.com",
+  "contact_address": "5900 Balcones Drive STE100, Austin, TX 78731"
+}

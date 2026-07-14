@@ -1,0 +1,6 @@
+.vercel
+.claude/
+*.log
+
+# 留言数据(隐私)不进仓库
+data/messages.json

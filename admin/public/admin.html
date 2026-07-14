@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>eBloomify 管理后台</title>
+<style>
+  :root{
+    --bg:#f6f6f4; --card:#fff; --text:#191917; --text2:#5b5b57; --text3:#9a9a94;
+    --line:#e8e8e4; --line2:#d6d6d1; --blue:#2563eb; --green:#1d8a4e; --red:#c4453f;
+    --r:10px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  input,textarea,select,button{font:inherit;color:inherit;}
+  input[type=text],input[type=password],input[type=email],input[type=url],textarea,select{
+    width:100%;padding:9px 12px;border:1px solid var(--line2);border-radius:8px;background:#fff;outline-color:var(--blue);
+  }
+  textarea{resize:vertical;}
+  label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin:14px 0 6px;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;border:1px solid var(--line2);background:#fff;cursor:pointer;font-weight:600;font-size:14px;}
+  .btn:hover{background:var(--bg);}
+  .btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.primary:hover{filter:brightness(.93);background:var(--blue);}
+  .btn.danger{color:var(--red);}
+  .btn.sm{padding:5px 12px;font-size:13px;}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;}
+  .muted{color:var(--text3);font-size:13px;}
+  /* 布局 */
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .hwrap{max-width:1080px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:20px;}
+  .hwrap b{font-size:15px;}
+  .tabs{display:flex;gap:4px;flex:1;}
+  .tab{padding:7px 14px;border-radius:8px;cursor:pointer;color:var(--text2);font-weight:600;font-size:14px;border:none;background:none;}
+  .tab.active{background:#eef3ff;color:var(--blue);}
+  .tab .badge{display:inline-block;background:var(--red);color:#fff;font-size:11px;border-radius:99px;padding:0 6px;margin-left:4px;vertical-align:1px;}
+  main{max-width:1080px;margin:0 auto;padding:24px 18px 80px;}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#191917;color:#fff;padding:10px 22px;border-radius:99px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;}
+  .toast.show{opacity:1;}
+  /* 登录 */
+  #loginView{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  #loginView .card{width:360px;max-width:100%;}
+  /* 产品列表 */
+  .plist{display:flex;flex-direction:column;gap:10px;}
+  .pitem{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;}
+  .pitem img{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--bg);}
+  .pitem .grow{flex:1;min-width:0;}
+  .pitem .nm{font-weight:600;}
+  .pill{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:99px;padding:1px 10px;color:var(--text2);}
+  .pill.on{color:var(--green);border-color:#cfe9d8;background:#e9f6ee;}
+  /* 编辑器 */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+  .imgrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+  .imgbox{position:relative;width:110px;}
+  .imgbox img{width:110px;height:82px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block;}
+  .imgbox .ops{display:flex;gap:4px;justify-content:center;margin-top:4px;}
+  .iconbtn{border:1px solid var(--line2);background:#fff;border-radius:6px;width:26px;height:24px;cursor:pointer;font-size:12px;line-height:1;}
+  .iconbtn:hover{background:var(--bg);}
+  .specrow{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
+  .specrow input:first-child{flex:0 0 180px;}
+  /* 富文本 */
+  .rtbar{display:flex;gap:4px;border:1px solid var(--line2);border-bottom:none;border-radius:8px 8px 0 0;padding:6px;background:#fafaf8;flex-wrap:wrap;}
+  .rt{min-height:180px;border:1px solid var(--line2);border-radius:0 0 8px 8px;padding:12px 14px;background:#fff;outline:none;overflow:auto;}
+  .rt h2{font-size:19px;margin:.8em 0 .4em;}
+  .rt:focus{outline:2px solid var(--blue);outline-offset:-1px;}
+  /* 留言 */
+  .msg{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:10px;}
+  .msg .top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;}
+  .msg .top b{font-size:15px;}
+  .msg p{margin:8px 0 0;white-space:pre-wrap;}
+  .savebar{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 30%);padding:18px 0 6px;display:flex;gap:10px;justify-content:flex-end;}
+  fieldset{border:1px solid var(--line);border-radius:var(--r);padding:4px 18px 18px;margin:0 0 18px;background:#fff;}
+  legend{font-weight:700;font-size:14px;padding:0 8px;color:var(--text2);}
+  .newsrow{display:grid;grid-template-columns:130px 1fr 1fr 110px 34px;gap:8px;margin-bottom:8px;align-items:center;}
+  @media(max-width:760px){.newsrow{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<!-- 登录 -->
+<div id="loginView" style="display:none;">
+  <div class="card">
+    <h2 style="margin:0 0 4px;">eBloomify 管理后台</h2>
+    <p class="muted" style="margin:0 0 18px;">请输入管理密码</p>
+    <input type="password" id="loginPwd" placeholder="密码" autocomplete="current-password">
+    <p id="loginErr" style="color:var(--red);font-size:13px;display:none;margin:8px 0 0;"></p>
+    <button class="btn primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="doLogin()">登 录</button>
+  </div>
+</div>
+
+<!-- 主界面 -->
+<div id="appView" style="display:none;">
+  <header>
+    <div class="hwrap">
+      <b>eBloomify 后台</b>
+      <nav class="tabs">
+        <button class="tab active" data-tab="products" onclick="showTab('products')">📦 产品管理</button>
+        <button class="tab" data-tab="content" onclick="showTab('content')">🏠 首页内容</button>
+        <button class="tab" data-tab="messages" onclick="showTab('messages')">💬 留言<span class="badge" id="msgBadge" style="display:none;"></span></button>
+      </nav>
+      <a href="/" target="_blank" class="muted" style="text-decoration:none;">查看官网 ↗</a>
+      <button class="btn sm" onclick="doLogout()">退出</button>
+    </div>
+  </header>
+  <main>
+    <!-- 产品列表 -->
+    <div id="tab-products">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h2 style="margin:0;font-size:20px;">产品</h2>
+        <button class="btn primary" onclick="editProduct(-1)">＋ 添加产品</button>
+      </div>
+      <div class="plist" id="plist"></div>
+      <p class="muted" style="margin-top:14px;">提示:保存后官网页面会自动更新。产品页地址是 /products/网址标识.html</p>
+    </div>
+
+    <!-- 产品编辑 -->
+    <div id="tab-editor" style="display:none;">
+      <button class="btn sm" onclick="closeEditor()" style="margin-bottom:14px;">← 返回产品列表</button>
+      <div class="card">
+        <h2 style="margin:0 0 6px;font-size:19px;" id="edTitle">编辑产品</h2>
+        <div class="grid2">
+          <div><label>产品名称 *</label><input type="text" id="f_name"></div>
+          <div><label>网址标识(slug,小写字母/数字/-)*</label><input type="text" id="f_slug" placeholder="例如 gardenet"></div>
+          <div><label>一句话副标题</label><input type="text" id="f_tagline" placeholder="例如 My Garden &amp; My Rewards"></div>
+          <div><label>排序(数字小的在前)</label><input type="text" id="f_order" inputmode="numeric"></div>
+        </div>
+        <label>简介(显示在首页卡片和产品页顶部)</label>
+        <textarea id="f_intro" rows="3"></textarea>
+        <div class="grid2">
+          <div><label>App Store 链接(留空则不显示按钮)</label><input type="url" id="f_appstore" placeholder="https://apps.apple.com/..."></div>
+          <div><label>Google Play 链接(留空则不显示按钮)</label><input type="url" id="f_googleplay" placeholder="https://play.google.com/..."></div>
+        </div>
+        <label>标签(用中文或英文逗号分隔)</label>
+        <input type="text" id="f_tags" placeholder="Plant tracking, Care reminders, Rewards">
+        <div class="grid2" style="margin-top:14px;">
+          <label style="margin:0;display:flex;align-items:center;gap:8px;font-weight:400;"><input type="checkbox" id="f_comingsoon" style="width:auto;">显示「Coming soon」标记</label>
+          <label style="margin:0;display:flex;align-items:center;gap:8px;font-weight:400;"><input type="checkbox" id="f_published" style="width:auto;">发布(取消勾选则从官网隐藏)</label>
+        </div>
+
+        <label>产品图标(显示在卡片和产品页标题旁)</label>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <img id="f_icon_preview" src="" style="width:52px;height:52px;border-radius:12px;object-fit:cover;border:1px solid var(--line);background:var(--bg);">
+          <button class="btn sm" onclick="pickImage(u=>{ed.icon=u;byId('f_icon_preview').src=u;})">上传图标</button>
+        </div>
+
+        <label>产品图片(第一张为主图,可排序)</label>
+        <div class="imgrow" id="f_images"></div>
+        <button class="btn sm" style="margin-top:8px;" onclick="pickImage(u=>{ed.images.push(u);renderImages();},true)">＋ 上传图片</button>
+
+        <label>详细介绍(支持格式)</label>
+        <div class="rtbar">
+          <button class="iconbtn" style="width:auto;padding:0 8px;font-weight:700;" onclick="rt('bold')">B</button>
+          <button class="iconbtn" style="width:auto;padding:0 8px;font-style:italic;" onclick="rt('italic')">I</button>
+          <button class="iconbtn" style="width:auto;padding:0 8px;" onclick="rt('formatBlock','h2')">标题</button>
+          <button class="iconbtn" style="width:auto;padding:0 8px;" onclick="rt('formatBlock','p')">正文</button>
+          <button class="iconbtn" style="width:auto;padding:0 8px;" onclick="rt('insertUnorderedList')">• 列表</button>
+          <button class="iconbtn" style="width:auto;padding:0 8px;" onclick="rtLink()">链接</button>
+          <button class="iconbtn" style="width:auto;padding:0 8px;" onclick="rtImg()">插图</button>
+        </div>
+        <div class="rt" id="f_content" contenteditable="true"></div>
+
+        <label>参数表(名称 + 内容,留空的行不会显示)</label>
+        <div id="f_specs"></div>
+        <button class="btn sm" onclick="ed.specs.push({name:'',value:''});renderSpecs()">＋ 加一行</button>
+
+        <div style="display:flex;gap:10px;justify-content:space-between;margin-top:26px;">
+          <button class="btn danger" id="edDelete" onclick="deleteProduct()">删除此产品</button>
+          <div style="display:flex;gap:10px;">
+            <button class="btn" onclick="closeEditor()">取消</button>
+            <button class="btn primary" onclick="saveProduct()">保存并更新官网</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 首页内容 -->
+    <div id="tab-content" style="display:none;">
+      <h2 style="margin:0 0 16px;font-size:20px;">首页内容</h2>
+      <fieldset><legend>顶部大标题</legend>
+        <div class="grid2">
+          <div><label>第一行</label><input type="text" id="c_hero_line1"></div>
+          <div><label>第二行</label><input type="text" id="c_hero_line2"></div>
+        </div>
+        <label>标题下方的介绍文字</label><textarea id="c_hero_sub" rows="2"></textarea>
+      </fieldset>
+      <fieldset><legend>产品区</legend>
+        <label>标题</label><input type="text" id="c_products_heading">
+        <label>副标题</label><textarea id="c_products_sub" rows="2"></textarea>
+      </fieldset>
+      <fieldset><legend>关于我们</legend>
+        <label>标题</label><input type="text" id="c_about_heading">
+        <label>第一段</label><textarea id="c_about_p1" rows="3"></textarea>
+        <label>第二段</label><textarea id="c_about_p2" rows="3"></textarea>
+      </fieldset>
+      <fieldset><legend>新闻(显示在首页 News 区)</legend>
+        <div id="c_news"></div>
+        <button class="btn sm" onclick="cd.news.push({date:'',title:'',url:'',icon:'ti-news'});renderNews()">＋ 添加新闻</button>
+        <p class="muted" style="margin:10px 0 0;">日期格式随意,例如 “Dec 23, 2024”。链接留空则不可点击。</p>
+      </fieldset>
+      <fieldset><legend>联系方式</legend>
+        <div class="grid2">
+          <div><label>邮箱</label><input type="email" id="c_contact_email"></div>
+          <div><label>地址</label><input type="text" id="c_contact_address"></div>
+        </div>
+        <label>联系区标题</label><input type="text" id="c_contact_heading">
+        <label>联系区文字</label><textarea id="c_contact_sub" rows="2"></textarea>
+      </fieldset>
+      <div class="savebar">
+        <button class="btn primary" onclick="saveContent()">保存并更新官网</button>
+      </div>
+    </div>
+
+    <!-- 留言 -->
+    <div id="tab-messages" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h2 style="margin:0;font-size:20px;">留言收件箱</h2>
+        <button class="btn sm danger" onclick="deleteCheckedMsgs()">删除选中</button>
+      </div>
+      <div id="msgs"></div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const byId = id => document.getElementById(id);
+let state = { content:{}, products:[], messages:[] };
+let ed = null, edIndex = -1;   // 正在编辑的产品
+let cd = null;                  // 正在编辑的首页内容副本
+
+function toast(t){ const el=byId('toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); }
+
+async function api(url, opts){
+  const r = await fetch(url, { headers:{'Content-Type':'application/json'}, ...opts });
+  if (r.status === 401) { showLogin(); throw new Error('未登录'); }
+  const j = await r.json().catch(()=>({}));
+  if (!r.ok) throw new Error(j.error || ('HTTP '+r.status));
+  return j;
+}
+
+// ── 登录 ──
+function showLogin(){ byId('loginView').style.display='flex'; byId('appView').style.display='none'; }
+async function doLogin(){
+  byId('loginErr').style.display='none';
+  try {
+    await api('/admin/api/login', { method:'POST', body: JSON.stringify({ password: byId('loginPwd').value }) });
+    byId('loginPwd').value='';
+    init();
+  } catch(e){ byId('loginErr').textContent=e.message; byId('loginErr').style.display='block'; }
+}
+byId('loginPwd').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+async function doLogout(){ try{ await api('/admin/api/logout',{method:'POST'});}catch(e){} showLogin(); }
+
+// ── 初始化 ──
+async function init(){
+  try {
+    state = await api('/admin/api/state');
+    byId('loginView').style.display='none';
+    byId('appView').style.display='block';
+    renderProducts(); loadContentForm(); renderMsgs();
+  } catch(e){ /* 未登录 → 已跳登录页 */ }
+}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===t));
+  ['products','editor','content','messages'].forEach(x=>byId('tab-'+x).style.display = (x===t?'':'none'));
+}
+
+// ── 产品 ──
+function renderProducts(){
+  const list = [...state.products].sort((a,b)=>(a.order||0)-(b.order||0));
+  byId('plist').innerHTML = list.map(p=>{
+    const i = state.products.indexOf(p);
+    return `<div class="pitem">
+      <img src="${esc(p.icon||'')}" onerror="this.style.visibility='hidden'">
+      <div class="grow">
+        <div class="nm">${esc(p.name)}</div>
+        <div class="muted">/products/${esc(p.slug)}.html · ${esc(p.tagline||'')}</div>
+      </div>
+      <span class="pill ${p.published!==false?'on':''}">${p.published!==false?'已发布':'已隐藏'}</span>
+      <button class="btn sm" onclick="editProduct(${i})">编辑</button>
+    </div>`;
+  }).join('') || '<p class="muted">还没有产品,点右上角「添加产品」。</p>';
+}
+
+function editProduct(i){
+  edIndex = i;
+  ed = i>=0 ? JSON.parse(JSON.stringify(state.products[i]))
+            : { name:'', slug:'', tagline:'', intro:'', icon:'', tags:[], appstore:'', googleplay:'',
+                comingsoon:false, images:[], contentHtml:'', specs:[], published:true,
+                order: state.products.length+1 };
+  byId('edTitle').textContent = i>=0 ? '编辑产品:'+ed.name : '添加产品';
+  byId('edDelete').style.display = i>=0 ? '' : 'none';
+  byId('f_name').value = ed.name||'';
+  byId('f_slug').value = ed.slug||'';
+  byId('f_tagline').value = ed.tagline||'';
+  byId('f_order').value = ed.order??'';
+  byId('f_intro').value = ed.intro||'';
+  byId('f_appstore').value = (ed.appstore&&ed.appstore!=='#')?ed.appstore:'';
+  byId('f_googleplay').value = (ed.googleplay&&ed.googleplay!=='#')?ed.googleplay:'';
+  byId('f_tags').value = (ed.tags||[]).join(', ');
+  byId('f_comingsoon').checked = !!ed.comingsoon;
+  byId('f_published').checked = ed.published!==false;
+  byId('f_icon_preview').src = ed.icon||'';
+  byId('f_content').innerHTML = ed.contentHtml||'';
+  ed.images = ed.images||[]; ed.specs = ed.specs||[];
+  renderImages(); renderSpecs();
+  showTab('editor');
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.dataset.tab==='products'));
+  window.scrollTo(0,0);
+}
+function closeEditor(){ showTab('products'); }
+
+function renderImages(){
+  byId('f_images').innerHTML = ed.images.map((u,i)=>`<div class="imgbox">
+    <img src="${esc(u)}">
+    <div class="ops">
+      <button class="iconbtn" title="前移" onclick="mvImg(${i},-1)">←</button>
+      <button class="iconbtn" title="后移" onclick="mvImg(${i},1)">→</button>
+      <button class="iconbtn" title="删除" onclick="ed.images.splice(${i},1);renderImages()">✕</button>
+    </div>
+  </div>`).join('') || '<span class="muted">暂无图片</span>';
+}
+function mvImg(i,d){ const j=i+d; if(j<0||j>=ed.images.length)return; [ed.images[i],ed.images[j]]=[ed.images[j],ed.images[i]]; renderImages(); }
+
+function renderSpecs(){
+  byId('f_specs').innerHTML = ed.specs.map((s,i)=>`<div class="specrow">
+    <input type="text" placeholder="名称,如 Platform" value="${esc(s.name)}" oninput="ed.specs[${i}].name=this.value">
+    <input type="text" placeholder="内容,如 iOS &amp; Android" value="${esc(s.value)}" oninput="ed.specs[${i}].value=this.value">
+    <button class="iconbtn" onclick="ed.specs.splice(${i},1);renderSpecs()">✕</button>
+  </div>`).join('');
+}
+
+function rt(cmd,val){ byId('f_content').focus(); document.execCommand(cmd,false,val); }
+function rtLink(){ const u=prompt('链接地址:','https://'); if(u) rt('createLink',u); }
+function rtImg(){ pickImage(u=>{ rt('insertImage', u); }); }
+
+function pickImage(cb, multi){
+  const inp=document.createElement('input');
+  inp.type='file'; inp.accept='image/*'; if(multi) inp.multiple=true;
+  inp.onchange=async ()=>{
+    for (const f of inp.files){
+      if (f.size > 10*1024*1024) { toast(f.name+' 超过 10MB,已跳过'); continue; }
+      const b64 = await new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.readAsDataURL(f); });
+      try {
+        const j = await api('/admin/api/upload',{method:'POST',body:JSON.stringify({name:f.name,data:b64})});
+        cb(j.url);
+      } catch(e){ toast('上传失败:'+e.message); }
+    }
+  };
+  inp.click();
+}
+
+function collectProduct(){
+  ed.name = byId('f_name').value.trim();
+  ed.slug = byId('f_slug').value.trim().toLowerCase();
+  ed.tagline = byId('f_tagline').value.trim();
+  ed.order = parseInt(byId('f_order').value,10)||0;
+  ed.intro = byId('f_intro').value.trim();
+  ed.appstore = byId('f_appstore').value.trim();
+  ed.googleplay = byId('f_googleplay').value.trim();
+  ed.tags = byId('f_tags').value.split(/[,,]/).map(s=>s.trim()).filter(Boolean);
+  ed.comingsoon = byId('f_comingsoon').checked;
+  ed.published = byId('f_published').checked;
+  ed.contentHtml = byId('f_content').innerHTML;
+  ed.specs = ed.specs.filter(s=>s.name.trim()&&s.value.trim());
+  ed.id = ed.id || ed.slug;
+}
+async function saveProduct(){
+  collectProduct();
+  if(!ed.name) return toast('请填产品名称');
+  if(!/^[a-z0-9-]+$/.test(ed.slug)) return toast('网址标识只能是小写字母、数字、连字符');
+  const products=[...state.products];
+  if (edIndex>=0) products[edIndex]=ed; else products.push(ed);
+  try {
+    await api('/admin/api/products',{method:'POST',body:JSON.stringify(products)});
+    state.products=products; renderProducts(); closeEditor(); toast('已保存,官网已更新 ✅');
+  } catch(e){ toast(e.message); }
+}
+async function deleteProduct(){
+  if(!confirm('确定删除「'+ed.name+'」?官网上的产品页也会被移除。')) return;
+  const products=state.products.filter((_,i)=>i!==edIndex);
+  try {
+    await api('/admin/api/products',{method:'POST',body:JSON.stringify(products)});
+    state.products=products; renderProducts(); closeEditor(); toast('已删除');
+  } catch(e){ toast(e.message); }
+}
+
+// ── 首页内容 ──
+function loadContentForm(){
+  cd = JSON.parse(JSON.stringify(state.content));
+  cd.news = cd.news||[];
+  for (const k of ['hero_line1','hero_line2','hero_sub','products_heading','products_sub','about_heading','about_p1','about_p2','contact_heading','contact_sub','contact_email','contact_address'])
+    byId('c_'+k).value = cd[k]||'';
+  renderNews();
+}
+function renderNews(){
+  byId('c_news').innerHTML = cd.news.map((n,i)=>`<div class="newsrow">
+    <input type="text" placeholder="日期" value="${esc(n.date||'')}" oninput="cd.news[${i}].date=this.value">
+    <input type="text" placeholder="标题" value="${esc(n.title||'')}" oninput="cd.news[${i}].title=this.value">
+    <input type="text" placeholder="链接(可留空)" value="${esc(n.url||'')}" oninput="cd.news[${i}].url=this.value">
+    <select oninput="cd.news[${i}].icon=this.value">
+      ${['ti-news|新闻','ti-brand-apple|苹果','ti-brand-google-play|Google','ti-rocket|发布','ti-award|奖项'].map(o=>{const[v,t]=o.split('|');return `<option value="${v}" ${((n.icon||'ti-news')===v)?'selected':''}>${t}</option>`;}).join('')}
+    </select>
+    <button class="iconbtn" onclick="cd.news.splice(${i},1);renderNews()">✕</button>
+  </div>`).join('');
+}
+async function saveContent(){
+  for (const k of ['hero_line1','hero_line2','hero_sub','products_heading','products_sub','about_heading','about_p1','about_p2','contact_heading','contact_sub','contact_email','contact_address'])
+    cd[k] = byId('c_'+k).value.trim();
+  cd.news = cd.news.filter(n=>n.title);
+  try {
+    await api('/admin/api/content',{method:'POST',body:JSON.stringify(cd)});
+    state.content=cd; toast('已保存,官网已更新 ✅');
+  } catch(e){ toast(e.message); }
+}
+
+// ── 留言 ──
+function renderMsgs(){
+  const ms = state.messages||[];
+  byId('msgBadge').style.display = ms.length?'inline-block':'none';
+  byId('msgBadge').textContent = ms.length;
+  byId('msgs').innerHTML = ms.map(m=>`<div class="msg">
+    <div class="top">
+      <input type="checkbox" class="msgck" value="${esc(m.id)}" style="width:auto;">
+      <b>${esc(m.name)}</b>
+      <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>
+      <span class="muted">${new Date(m.time).toLocaleString()}</span>
+    </div>
+    <p>${esc(m.message)}</p>
+  </div>`).join('') || '<p class="muted">暂无留言。官网「Send us a message」表单提交后会出现在这里。</p>';
+}
+async function deleteCheckedMsgs(){
+  const ids=[...document.querySelectorAll('.msgck:checked')].map(c=>c.value);
+  if(!ids.length) return toast('先勾选要删除的留言');
+  if(!confirm('删除选中的 '+ids.length+' 条留言?')) return;
+  try {
+    await api('/admin/api/messages/delete',{method:'POST',body:JSON.stringify({ids})});
+    state.messages=state.messages.filter(m=>!ids.includes(m.id)); renderMsgs(); toast('已删除');
+  } catch(e){ toast(e.message); }
+}
+
+function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+init();
+</script>
+</body>
+</html>

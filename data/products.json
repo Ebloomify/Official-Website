@@ -1,0 +1,50 @@
+[
+  {
+    "id": "gardenet",
+    "slug": "gardenet",
+    "name": "GardeNet",
+    "tagline": "My Garden & My Rewards",
+    "icon": "/assets/a2.png",
+    "intro": "A gardening companion that helps you plan, track, and care for your plants — and earn rewards as your green world grows.",
+    "tags": ["Plant tracking", "Care reminders", "Rewards"],
+    "appstore": "#",
+    "googleplay": "#",
+    "comingsoon": false,
+    "images": [
+      "/uploads/gardenet-discovery.jpg",
+      "/uploads/gardenet-community.jpg",
+      "/uploads/gardenet-garden-rewards.jpg",
+      "/uploads/gardenet-plant-care.jpg"
+    ],
+    "contentHtml": "<h2>Discovery</h2><p>Explore a living feed of gardening inspiration — popular posts, gardening tips, plant clinic advice, home-decor plant ideas and kitchen-garden guides, all curated for green thumbs of every level.</p><h2>Community &amp; Q&amp;A</h2><p>Share your garden with people who care about the same things. Post to the community, ask questions, and get answers from fellow gardeners and plant lovers around the world.</p><h2>My Garden &amp; My Rewards</h2><p>Plan and track your own garden, log your plants' progress, and earn rewards as your green world grows — gardening feels even better when it pays off.</p><h2>My Plant &amp; Plant Care</h2><p>Keep every plant healthy with tailored care reminders — watering, fertilizing, repotting — plus a full care history for each plant in your collection.</p>",
+    "specs": [
+      { "name": "Platform", "value": "iOS & Android" },
+      { "name": "Price", "value": "Free" },
+      { "name": "Category", "value": "Lifestyle · Gardening" },
+      { "name": "Developer", "value": "eBloomify LLC" }
+    ],
+    "published": true,
+    "order": 1
+  },
+  {
+    "id": "echicshop",
+    "slug": "echicshop",
+    "name": "eChicShop",
+    "tagline": "Curated shopping",
+    "icon": "/assets/a8.png",
+    "intro": "A shopping experience built around discovery and delight — bringing people and products together in one connected space.",
+    "tags": ["Curated picks", "Community"],
+    "appstore": "",
+    "googleplay": "",
+    "comingsoon": true,
+    "images": ["/uploads/echicshop.png"],
+    "contentHtml": "<p>eChicShop is our upcoming shopping experience built around discovery and delight. Instead of endless search results, eChicShop brings you curated picks and a community of people whose taste you trust — bringing people and products together in one connected space.</p><p>Stay tuned — we're getting ready to launch.</p>",
+    "specs": [
+      { "name": "Platform", "value": "iOS & Android" },
+      { "name": "Status", "value": "Coming soon" },
+      { "name": "Developer", "value": "eBloomify LLC" }
+    ],
+    "published": true,
+    "order": 2
+  }
+]
