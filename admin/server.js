@@ -156,9 +156,10 @@ const server = http.createServer(async (req, res) => {
       if (!loginAllowed(ip)) return send(res, 429, { error: '尝试次数过多,请15分钟后再试' });
       let b;
       try { b = await readJsonBody(req, 4096); } catch { return send(res, 400, { error: 'bad request' }); }
-      if (sha256(String(b.password || '')) !== cfg.passwordHash) {
+      const userOk = !cfg.adminUser || String(b.username || '').trim() === cfg.adminUser;
+      if (!userOk || sha256(String(b.password || '')) !== cfg.passwordHash) {
         loginFailed(ip);
-        return send(res, 401, { error: '密码错误' });
+        return send(res, 401, { error: '账号或密码错误' });
       }
       const token = newSession();
       return send(res, 200, { ok: true }, {

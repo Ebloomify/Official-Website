@@ -3,6 +3,7 @@
   "siteDir": "../site",
   "dataDir": "../data",
   "templatesDir": "../site/templates",
+  "adminUser": "admin",
   "passwordHash": "ecd71870d1963316a97e3ac3408c9835ad8cf0f3c1bc703527c30265534f75ae",
-  "_说明": "本地开发配置,密码 test123。服务器上的 config.json 部署时单独生成(指向 C:\\wwwroot 并使用正式密码)。"
+  "_说明": "本地开发配置,账号 admin 密码 test123。服务器上的 config.json 部署时单独生成(指向 C:\\wwwroot 并使用正式密码)。"
 }
