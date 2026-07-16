@@ -191,5 +191,16 @@
   </footer>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
+  <script>
+  (function(){
+    function ensureVideoControls(){
+      document.querySelectorAll('video').forEach(function(v){ if (!v.controls) v.controls = true; });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureVideoControls);
+    else ensureVideoControls();
+    setTimeout(ensureVideoControls, 800);
+    setTimeout(ensureVideoControls, 2500);
+  })();
+  </script>
 </body>
 </html>
