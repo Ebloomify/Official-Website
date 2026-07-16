@@ -19,7 +19,7 @@ const crypto = require('crypto');
 
 // ── 配置 ──
 const CONFIG_PATH = path.join(__dirname, 'config.json');
-const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8').replace(/^﻿/, ''));
 const PORT = cfg.port || 3000;
 const SITE_DIR = path.resolve(__dirname, cfg.siteDir);        // 生成页面输出目录(服务器上是 C:\wwwroot)
 const DATA_DIR = path.resolve(__dirname, cfg.dataDir);        // JSON 数据目录
@@ -34,7 +34,7 @@ fs.mkdirSync(DATA_DIR, { recursive: true });
 // ── 小工具 ──
 function sha256(s) { return crypto.createHash('sha256').update(s).digest('hex'); }
 function readJson(f, fallback) {
-  try { return JSON.parse(fs.readFileSync(path.join(DATA_DIR, f), 'utf8')); }
+  try { return JSON.parse(fs.readFileSync(path.join(DATA_DIR, f), 'utf8').replace(/^﻿/, '')); }
   catch { return fallback; }
 }
 function writeJson(f, data) {
