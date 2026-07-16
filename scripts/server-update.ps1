@@ -8,8 +8,8 @@ New-Item -ItemType Directory -Force "C:\Temp" | Out-Null
 # 1. 备份服务器配置(仓库里是开发配置,不能覆盖线上的)
 Copy-Item "C:\ebloomify-app\admin\config.json" "C:\Temp\config.server.json" -Force
 
-# 2. 下载最新代码
-Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/Ebloomify/Official-Website/archive/refs/heads/main.zip" -OutFile "C:\Temp\site.zip"
+# 2. 下载最新代码(带随机参数防缓存)
+Invoke-WebRequest -UseBasicParsing -Uri ("https://codeload.github.com/Ebloomify/Official-Website/zip/refs/heads/main?nocache=" + (Get-Random)) -OutFile "C:\Temp\site.zip"
 Remove-Item "C:\Temp\site_extract" -Recurse -Force -ErrorAction SilentlyContinue
 Expand-Archive "C:\Temp\site.zip" "C:\Temp\site_extract" -Force
 $src = "C:\Temp\site_extract\Official-Website-main"
@@ -23,8 +23,13 @@ Copy-Item "$src\site\templates" "C:\ebloomify-app\site\" -Recurse -Force
 # 4. 恢复线上配置
 Copy-Item "C:\Temp\config.server.json" "C:\ebloomify-app\admin\config.json" -Force
 
-# 5. 静态资源更新到 wwwroot(不动 uploads)
+# 5. 静态资源更新到 wwwroot;uploads 只补新文件,不覆盖服务器上已有的(后台传的图/视频优先)
 Copy-Item "$src\site\assets" "C:\wwwroot\" -Recurse -Force
+New-Item -ItemType Directory -Force "C:\wwwroot\uploads" | Out-Null
+foreach ($f in Get-ChildItem "$src\site\uploads" -File -ErrorAction SilentlyContinue) {
+  $dst = "C:\wwwroot\uploads\$($f.Name)"
+  if (-not (Test-Path $dst)) { Copy-Item $f.FullName $dst }
+}
 
 # 6. 用服务器上的数据重建全部页面
 & "C:\Program Files\nodejs\node.exe" -e "require('C:/ebloomify-app/lib/build.js').buildSite({dataDir:'C:/ebloomify-app/data',templatesDir:'C:/ebloomify-app/site/templates',outDir:'C:/wwwroot'})"

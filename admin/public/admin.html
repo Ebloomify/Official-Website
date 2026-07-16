@@ -150,6 +150,14 @@
         <div class="imgrow" id="f_images"></div>
         <button class="btn sm" style="margin-top:8px;" onclick="pickImage(u=>{ed.images.push(u);renderImages();},true)">＋ 上传图片</button>
 
+        <label>产品视频(显示在首页卡片和产品页,mp4 格式,建议 50MB 以内)</label>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <span id="f_video_name" class="muted"></span>
+          <button class="btn sm" onclick="pickVideo()">上传视频</button>
+          <button class="btn sm danger" id="f_video_del" onclick="ed.video='';renderVideo()">移除视频</button>
+        </div>
+        <video id="f_video_preview" controls muted style="display:none;max-width:420px;width:100%;border-radius:8px;border:1px solid var(--line);margin-top:10px;"></video>
+
         <label>详细介绍(支持格式)</label>
         <div class="rtbar">
           <button class="iconbtn" style="width:auto;padding:0 8px;font-weight:700;" onclick="rt('bold')">B</button>
@@ -308,8 +316,8 @@ function editProduct(i){
   byId('f_published').checked = ed.published!==false;
   byId('f_icon_preview').src = ed.icon||'';
   byId('f_content').innerHTML = ed.contentHtml||'';
-  ed.images = ed.images||[]; ed.specs = ed.specs||[];
-  renderImages(); renderSpecs();
+  ed.images = ed.images||[]; ed.specs = ed.specs||[]; ed.video = ed.video||'';
+  renderImages(); renderSpecs(); renderVideo();
   showTab('editor');
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.dataset.tab==='products'));
   window.scrollTo(0,0);
@@ -334,6 +342,30 @@ function renderSpecs(){
     <input type="text" placeholder="内容,如 iOS &amp; Android" value="${esc(s.value)}" oninput="ed.specs[${i}].value=this.value">
     <button class="iconbtn" onclick="ed.specs.splice(${i},1);renderSpecs()">✕</button>
   </div>`).join('');
+}
+
+function renderVideo(){
+  const has = !!ed.video;
+  byId('f_video_name').textContent = has ? ed.video : '暂无视频';
+  byId('f_video_del').style.display = has ? '' : 'none';
+  const v = byId('f_video_preview');
+  v.style.display = has ? 'block' : 'none';
+  if (has) v.src = ed.video; else v.removeAttribute('src');
+}
+function pickVideo(){
+  const inp=document.createElement('input');
+  inp.type='file'; inp.accept='video/mp4,video/webm';
+  inp.onchange=async ()=>{
+    const f=inp.files[0]; if(!f) return;
+    if (f.size > 50*1024*1024) return toast('视频超过 50MB,请压缩后再传');
+    toast('视频上传中,请稍等...');
+    const b64 = await new Promise(res=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.readAsDataURL(f); });
+    try {
+      const j = await api('/admin/api/upload',{method:'POST',body:JSON.stringify({name:f.name,data:b64})});
+      ed.video = j.url; renderVideo(); toast('视频已上传 ✅(记得点保存)');
+    } catch(e){ toast('上传失败:'+e.message); }
+  };
+  inp.click();
 }
 
 function rt(cmd,val){ byId('f_content').focus(); document.execCommand(cmd,false,val); }

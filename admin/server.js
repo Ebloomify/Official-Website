@@ -207,10 +207,10 @@ const server = http.createServer(async (req, res) => {
       }
 
       if (url === '/admin/api/upload' && req.method === 'POST') {
-        const b = await readJsonBody(req, 15 * 1024 * 1024);
+        const b = await readJsonBody(req, 64 * 1024 * 1024);
         const name = String(b.name || 'file');
-        const ext = (name.match(/\.(png|jpe?g|gif|webp|svg)$/i) || [])[0];
-        if (!ext) return send(res, 400, { error: '只支持 png/jpg/gif/webp/svg 图片' });
+        const ext = (name.match(/\.(png|jpe?g|gif|webp|svg|mp4|webm)$/i) || [])[0];
+        if (!ext) return send(res, 400, { error: '只支持 png/jpg/gif/webp/svg 图片或 mp4/webm 视频' });
         const data = Buffer.from(String(b.data || ''), 'base64');
         if (!data.length) return send(res, 400, { error: '空文件' });
         const base = name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'img';

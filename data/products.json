@@ -40,7 +40,8 @@
       }
     ],
     "published": true,
-    "order": 1
+    "order": 1,
+    "video": ""
   },
   {
     "id": "echicshop",
@@ -55,19 +56,15 @@
     ],
     "appstore": "",
     "googleplay": "",
-    "comingsoon": true,
+    "comingsoon": false,
     "images": [
       "/uploads/echicshop.png"
     ],
-    "contentHtml": "<p>eChicShop is our upcoming shopping experience built around discovery and delight. Instead of endless search results, eChicShop brings you curated picks and a community of people whose taste you trust — bringing people and products together in one connected space.</p><p>Stay tuned — we're getting ready to launch.</p>",
+    "contentHtml": "<p>eChicShop is our shopping experience built around discovery and delight. Instead of endless search results, eChicShop brings you curated picks and a community of people whose taste you trust — bringing people and products together in one connected space.</p>",
     "specs": [
       {
         "name": "Platform",
         "value": "iOS & Android"
-      },
-      {
-        "name": "Status",
-        "value": "Coming soon"
       },
       {
         "name": "Developer",
@@ -75,6 +72,7 @@
       }
     ],
     "published": true,
-    "order": 2
+    "order": 2,
+    "video": "/uploads/echicshop-demo.mp4"
   }
 ]
