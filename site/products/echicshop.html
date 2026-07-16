@@ -135,7 +135,7 @@
   <!-- Footer(与首页一致) -->
   <footer style="background:var(--color-background-secondary);border-top:0.5px solid var(--color-border-tertiary);padding:56px 0 32px;">
     <div style="width:min(1180px,100% - 40px);margin:0 auto;">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-bottom:40px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:32px;margin-bottom:40px;">
         <div style="max-width:320px;">
           <img src="/assets/a6.png" alt="eBloomify" style="height:28px;width:auto;display:block;margin-bottom:14px;">
           <p style="font-size:13.5px;color:var(--color-text-tertiary);line-height:1.6;margin:0;">Grow, Connect, Thrive. Cultivate Your Green World. Consumer products and agentic AI services, made in Austin, Texas.</p>
@@ -179,5 +179,14 @@
     setTimeout(ensureVideoControls, 2500);
   })();
   </script>
+  <style>
+  /* 手机端页头适配 */
+  @media (max-width: 860px) {
+    header nav { display: none !important; }
+  }
+  @media (max-width: 480px) {
+    header a[href^='mailto:'] { display: none !important; }
+  }
+  </style>
 </body>
 </html>
