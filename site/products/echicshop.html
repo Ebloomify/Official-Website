@@ -64,7 +64,7 @@
   <!-- 产品视频 -->
   <section style="background:var(--color-background-primary);padding:72px 0 0;">
     <div data-reveal="" style="width:min(1180px,100% - 40px);margin:0 auto;">
-      <video src="/uploads/echicshop-demo.mp4" muted autoplay loop playsinline controls preload="metadata" style="width:100%;max-height:640px;border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);display:block;background:var(--color-background-secondary);"></video>
+      <video src="/uploads/echicshop-demo.mp4" playsinline controls preload="metadata" style="width:100%;max-height:640px;border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);display:block;background:var(--color-background-secondary);"></video>
     </div>
   </section>
   
@@ -168,19 +168,5 @@
   </footer>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
-  <script>
-  (function(){
-    function fixVideos(){
-      document.querySelectorAll('video[autoplay]').forEach(function(v){
-        v.muted = true; v.defaultMuted = true;
-        if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
-      });
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fixVideos);
-    else fixVideos();
-    setTimeout(fixVideos, 800);
-    setTimeout(fixVideos, 2500);
-  })();
-  </script>
 </body>
 </html>

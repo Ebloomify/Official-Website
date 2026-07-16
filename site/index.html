@@ -376,7 +376,7 @@
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;">
             <span style="font-size:12.5px;color:var(--color-text-secondary);background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-pill);padding:5px 12px;">Curated picks</span><span style="font-size:12.5px;color:var(--color-text-secondary);background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-pill);padding:5px 12px;">Community</span>
           </div>
-          <video src="/uploads/echicshop-demo.mp4" muted autoplay loop playsinline controls preload="metadata" style="width:100%;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);display:block;margin-bottom:20px;background:var(--color-background-secondary);"></video>
+          <video src="/uploads/echicshop-demo.mp4" playsinline controls preload="metadata" style="width:100%;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);display:block;margin-bottom:20px;background:var(--color-background-secondary);"></video>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:auto;">
             
             
@@ -965,18 +965,4 @@ class Component extends DCLogic {
 </script>
 
 
-  <script>
-  (function(){
-    function fixVideos(){
-      document.querySelectorAll('video[autoplay]').forEach(function(v){
-        v.muted = true; v.defaultMuted = true;
-        if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
-      });
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fixVideos);
-    else fixVideos();
-    setTimeout(fixVideos, 800);
-    setTimeout(fixVideos, 2500);
-  })();
-  </script>
 </body></html>
