@@ -168,5 +168,19 @@
   </footer>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
+  <script>
+  (function(){
+    function fixVideos(){
+      document.querySelectorAll('video[autoplay]').forEach(function(v){
+        v.muted = true; v.defaultMuted = true;
+        if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fixVideos);
+    else fixVideos();
+    setTimeout(fixVideos, 800);
+    setTimeout(fixVideos, 2500);
+  })();
+  </script>
 </body>
 </html>
