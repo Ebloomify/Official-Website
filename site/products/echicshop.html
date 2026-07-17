@@ -171,7 +171,7 @@
   <script>
   (function(){
     function ensureVideoControls(){
-      document.querySelectorAll('video').forEach(function(v){ if (!v.controls) v.controls = true; });
+      document.querySelectorAll('video').forEach(function(v){ if (!v.controls) v.controls = true; if (!v.dataset.mutedInit) { v.dataset.mutedInit = '1'; v.muted = true; v.defaultMuted = true; } });
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureVideoControls);
     else ensureVideoControls();
